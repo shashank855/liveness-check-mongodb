@@ -14,7 +14,6 @@ l_r_c=os.environ['LIVENESS_RETRY_COUNT']     # No of retries after a db_connect 
  
 
 
-# client = MongoClient("mongodb://127.0.0.1:27017/mydb")
 client = MongoClient("mongodb://mongo.litmus.svc.cluster.local/mydb")
 db=client.admin
 
