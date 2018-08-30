@@ -41,6 +41,15 @@ def database_check(db):
             break
         time.sleep(int(i_w_d))
 
+def retry_connection(db):
+    for y in range(1,int(l_r_c)):
+       z=db_init_check(db)
+       if z==1:
+           return z
+       time.sleep(int(l_t_s))
+    if z==0:
+        return z   
+
 #liveness check
 def liveness_check(db):
     while True:
@@ -51,18 +60,14 @@ def liveness_check(db):
         except Exception as e:
             print("liveness Failed", e)
             # sys.stdout.flush()
-            for y in range(1,int(l_r_c)):
-                z=db_init_check(db)
-                if z==1:
-                    break
-                time.sleep(int(l_t_s))
+            z=retry_connection(db)
             if z==0:
                 break   
         time.sleep(int(l_p_s))
  
 if __name__== "__main__":
     
-    client = MongoClient("mongodb://mongo.litmus.svc.cluster.local/mydb")
+    client = MongoClient("mongodb://127.0.0.1:27017/mydb")
     db=client.admin
     database_check(db)
     liveness_check(db)
